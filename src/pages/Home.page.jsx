@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 //component
 import EntertainmentCardSlider from "../component/Entertainment/EntertainmentCard.Component";
 import HeroCarousel from "../component/HeroCarousel/HeroCarousel.Component";
@@ -11,8 +11,31 @@ import DefaultLayoutHoc from "../layout/Default.layout";
 const Homepage = () => {
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [premierMovies, setPremierMovies] = useState([]);
-  const [onlineStremEvents, seetOnlineStreamEvents] = useState([]);
-
+  const [onlineStremEvents, setOnlineStreamEvents] = useState([]);
+  //recommended
+  useEffect(() => {
+    const requestTopRatedMovies = async () => {
+      const getTopRatedMovies = await axios.get("/movie/top_rated");
+      setRecommendedMovies(getTopRatedMovies.data.results);
+    };
+    requestTopRatedMovies();
+  }, []);
+  //premier
+  useEffect(() => {
+    const requestPremierMovies = async () => {
+      const getPremierMovies = await axios.get("/movie/now_playing");
+      setPremierMovies(getPremierMovies.data.results);
+    };
+    requestPremierMovies();
+  }, []);
+  //Stream events
+  useEffect(() => {
+    const requestOnlineStreamEvents = async () => {
+      const getOnlineStreamEvents = await axios.get("/movie/upcoming");
+      setOnlineStreamEvents(getOnlineStreamEvents.data.results);
+    };
+    requestOnlineStreamEvents();
+  }, []);
   return (
     <>
       <HeroCarousel />
@@ -25,7 +48,7 @@ const Homepage = () => {
       <div className="container mx-auto px-4 md:px-12 my-8">
         <PosterSlider
           title="Recommended Movies"
-          subject="List of recommended movies"
+          subtitle="List of recommended movies"
           poster={recommendedMovies}
           isDark={false}
         />
@@ -41,7 +64,7 @@ const Homepage = () => {
           </div>
           <PosterSlider
             title="Premiers"
-            subject="Brand new releases every Friday"
+            subtitle="Brand new releases every Friday"
             poster={premierMovies}
             isDark={true}
           />
@@ -50,7 +73,7 @@ const Homepage = () => {
       <div className="container mx-auto px-4 md:px-12 my-8">
         <PosterSlider
           title="online Streaming Event"
-          subject=""
+          subtitle=""
           poster={onlineStremEvents}
           isDark={false}
         />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HeroSlider from "react-slick";
-import { NextArrow, PrevArrow } from "./Arrows.Component";
+// import { NextArrow, PrevArrow } from "./Arrows.Component";
 const HeroCarousel = () => {
   const [images, setImages] = useState([
     {
@@ -93,11 +93,14 @@ const HeroCarousel = () => {
   const settingsLG = {
     arrows: true,
     infinite: true,
-    speed: 500,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    cssEase: "linear",
+    // nextArrow: <NextArrow />,
+    // prevArrow: <PrevArrow />,
   };
   const settings = {
     arrows: true,
@@ -105,15 +108,16 @@ const HeroCarousel = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    autoplay: true,
+    // nextArrow: <NextArrow />,
+    // prevArrow: <PrevArrow />,
   };
   return (
     <>
       <div className="lg:hidden">
         <HeroSlider {...settings}>
-          {images.map((images) => (
-            <div className="w-full h-56 md:h-80 py-3">
+          {images.map((images, index) => (
+            <div className="w-full h-56 md:h-80 py-3" key={index}>
               <img
                 src={`https://image.tmdb.org/t/p/original${images.backdrop_path}`}
                 alt="HeroBanner"
@@ -125,8 +129,8 @@ const HeroCarousel = () => {
       </div>
       <div className="hidden lg:block">
         <HeroSlider {...settingsLG}>
-          {images.map((images) => (
-            <div className="w-full h-96 px-2 py-3">
+          {images.map((images, index) => (
+            <div className="w-full h-96 px-2 py-3" key={index}>
               <img
                 src={`https://image.tmdb.org/t/p/original${images.backdrop_path}`}
                 alt="HeroBanner"
