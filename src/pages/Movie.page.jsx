@@ -6,6 +6,7 @@ import { MovieContext } from "../context/Movie.context";
 import Slider from "react-slick";
 import { FaCcVisa, FaCcApplePay } from "react-icons/fa";
 import PosterSlider from "../component/PosterSlider/PosterSlider.Component";
+import MovieHero from "../component/MovieHero/MovieHero.Component";
 
 const Moviepage = () => {
   const { id } = useParams();
@@ -43,12 +44,49 @@ const Moviepage = () => {
     };
     requestRecommendedMovies();
   }, [id]);
+  useEffect(() => {
+    const requestMovie = async () => {
+      const getMovieData = await axios.get(`/movie/${id}`);
+      setMovie(getMovieData.data);
+    };
+    requestMovie();
+  }, [id]);
+
   const settingsCast = {};
-  const settings = {};
+  const settings = {
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
     <>
-      {/* MovieHero */}
-      <div className="my-12 container px-4 lg:w-2/1 lg-ml-20">
+      <MovieHero />
+      <div className="my-12 container px-4 lg:w-2/3 lg:ml-20">
         <div className="flex flex-col item-start gap-3">
           <h1 className=" text-gray-800 font-bold text-2xl">About the movie</h1>
           <p>{movie.overview}</p>
@@ -116,9 +154,9 @@ const Moviepage = () => {
         <div className="my-8 ">
           <PosterSlider
             config={settings}
-            title="Recommended Movies"
+            title="Similar Movies"
             isDark={false}
-            poster={recommendedMovies}
+            poster={similarMOvies}
           />
         </div>
       </div>
